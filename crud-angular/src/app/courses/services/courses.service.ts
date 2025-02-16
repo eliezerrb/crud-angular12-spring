@@ -11,7 +11,7 @@ export class CoursesService {
 
   // readonly previnir que eu faça modificações nesse valor
   // caminho do endpoint
-  private readonly API = '/assets/courses.json'
+  private readonly API = 'api/courses'
 
   constructor(private httpClient: HttpClient) { }
 
