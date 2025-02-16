@@ -21,7 +21,7 @@ export class CoursesService {
     .pipe(
       // pegar a primeira resposta e fechar a conexão, isso porque não é um websocket
       first(),
-      delay(5000),
+      //delay(5000),
       // quando eu receber a lista de cursos eu faço alguma coisa, nessa caso mostra o log
       tap(courses => console.log(courses))
     );
