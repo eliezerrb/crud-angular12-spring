@@ -1,1 +1,31 @@
-<p>courses works!</p>
+<mat-card>
+  <mat-toolbar color="primary">Cursos disponíveis</mat-toolbar>
+
+  <!-- courses$ é um observable | async para automaticamente se inscrever no observable e destruir a o componete o angular faz o unsubscribe não ficar fazendo requisição -->
+  <!-- vai ser responsavel por se inscrever no observable extrai as informações, atribuir elas para a variavel local que se chama courses-->
+  <div *ngIf="courses$ | async as courses; else loading">
+    <table mat-table [dataSource]="courses" class="mat-elevation-z8">
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Curso</th>
+        <td mat-cell *matCellDef="let course">{{ course.name }}</td>
+      </ng-container>
+
+      <!-- Category Column -->
+      <ng-container matColumnDef="category">
+        <th mat-header-cell *matHeaderCellDef>Categoria</th>
+        <td mat-cell *matCellDef="let course">{{ course.category }}</td>
+      </ng-container>
+
+      <!-- Para cada registro mostre o que foi declarado na displayedColumns -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+
+  <ng-template #loading>
+    <div class="loading-spinner">
+      <mat-spinner></mat-spinner>
+    </div>
+  </ng-template>
+</mat-card>
