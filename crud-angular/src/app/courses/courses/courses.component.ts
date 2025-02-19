@@ -5,6 +5,7 @@ import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { ErrorDialogComponent } from 'src/app/shared/components/error-dialog/error-dialog.component';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-courses',
@@ -14,13 +15,16 @@ import { ErrorDialogComponent } from 'src/app/shared/components/error-dialog/err
 export class CoursesComponent implements OnInit {
   // por padrão tem que tipar, usar o any somente se não souber o tipo, ex: course: any[] = [];
   courses$: Observable<Course[]>;
-  displayedColumns = ['name', 'category'];
+  displayedColumns = ['name', 'category', 'actions'];
 
   // coursesService: CoursesService;
 
   constructor(
     private coursesService: CoursesService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private router: Router,
+    // ActivatedRoute rota que temos agora
+    private route: ActivatedRoute
   ) {
     // iniciar a variável ou no construtor ou na declaração
     // this.courses = []
@@ -39,6 +43,12 @@ export class CoursesComponent implements OnInit {
     this.dialog.open(ErrorDialogComponent, {
       data: errorMsg
     });
+  }
+
+  onAdd() {
+    console.log('onAdd');
+    // Pego a rota que eu estou e agrego o / new
+    this.router.navigate(['new'], {relativeTo: this.route});
   }
 
   ngOnInit(): void {}
