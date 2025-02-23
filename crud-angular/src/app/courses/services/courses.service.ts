@@ -25,7 +25,7 @@ export class CoursesService {
     );
   }
 
-  save(record: Course) {
+  save(record: Partial<Course>) {
     // o pipe é para manipular o retorno do post
    return this.httpClient.post<Course>(this.API, record).pipe(first());
   }
