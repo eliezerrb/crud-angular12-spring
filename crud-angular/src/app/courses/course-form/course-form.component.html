@@ -3,7 +3,7 @@
   <mat-toolbar color="primary">Detalhes do Curso</mat-toolbar>
   <mat-card-content>
     <!-- [formGroup] Os campos que estirem dentro da TAG form vão fazer referencia aos campos que eu tenho dentro do grupo de formulários -->
-    <form [formGroup]="form">
+    <form [formGroup]="form" class="min-width">
       <mat-form-field  class="full-with">
         <!-- formControlName="name" fazendo associação ao name dentro do form-->
         <input matInput placeholder="Nome" formControlName="name">
