@@ -15,7 +15,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class CoursesComponent implements OnInit {
   // por padrão tem que tipar, usar o any somente se não souber o tipo, ex: course: any[] = [];
   courses$: Observable<Course[]>;
-  displayedColumns = ['name', 'category', 'actions'];
 
   // coursesService: CoursesService;
 
