@@ -5,7 +5,14 @@
 
   <!-- courses$ é um observable | async para automaticamente se inscrever no observable e destruir a o componete o angular faz o unsubscribe não ficar fazendo requisição -->
   <!-- vai ser responsavel por se inscrever no observable extrai as informações, atribuir elas para a variavel local que se chama courses-->
-  <app-courses-list *ngIf="courses$ | async as courses; else loading" [courses]="courses">
+
+  <!-- [courses]="courses" faz um imput para o componente filho-->
+  <!-- (add)="onAdd()" é um listener escutando o componente filho para quando clicar no adicionar curso-->
+   <!-- Esses comunicação entre componente pai e filho foi feita para separar os componenentes e facilitar na criação dos testes-->
+  <app-courses-list
+    *ngIf="courses$ | async as courses; else loading"
+    [courses]="courses"
+    (add)="onAdd()">
   </app-courses-list>
 
   <ng-template #loading>
