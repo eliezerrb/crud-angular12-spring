@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,7 @@ import com.eliezer.crud_spring.model.Course;
 import com.eliezer.crud_spring.repository.CourseRepository;
 
 import lombok.AllArgsConstructor;
+
 
 
 @RestController
@@ -32,6 +34,16 @@ public class CourseController {
     public List<Course> list() {
         return courseRepository.findAll();
     }
+
+    // com @PathVariable é possível pegar o valor que está vindo na url
+    // ResponseEntity classe que permite retornar caso agente queira controlar o que esta indo de resposta na requisição
+    @GetMapping("/{id}")
+    public ResponseEntity<Course> findById(@PathVariable Long id) {
+        return courseRepository.findById(id)
+                .map(course -> ResponseEntity.ok(course))
+                .orElse(ResponseEntity.notFound().build());
+    }
+    
 
     // @RequestMapping(method = RequestMethod.POST)   
     // @RequestBody consegue pegar o que está vindo no payload na chamada do post desde que as variaceis tenham o mesmo nome
