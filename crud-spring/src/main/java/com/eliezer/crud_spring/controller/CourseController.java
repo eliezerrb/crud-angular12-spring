@@ -37,6 +37,7 @@ public class CourseController {
 
     // com @PathVariable é possível pegar o valor que está vindo na url
     // ResponseEntity classe que permite retornar caso agente queira controlar o que esta indo de resposta na requisição
+    // .map(course -> ResponseEntity.ok(course)) -> se o (retorno) existir retorna ela
     @GetMapping("/{id}")
     public ResponseEntity<Course> findById(@PathVariable Long id) {
         return courseRepository.findById(id)
