@@ -25,6 +25,10 @@ export class CoursesService {
     );
   }
 
+  loadById(id: string) {
+    return this.httpClient.get<Course>(`${this.API}/${id}`);
+  }
+
   save(record: Partial<Course>) {
     // o pipe é para manipular o retorno do post
    return this.httpClient.post<Course>(this.API, record).pipe(first());
