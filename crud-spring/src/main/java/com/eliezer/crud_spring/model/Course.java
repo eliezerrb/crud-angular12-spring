@@ -1,6 +1,5 @@
 package com.eliezer.crud_spring.model;
 
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Column;
@@ -8,6 +7,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 // @Data do lombok para criar getter, setter, construtor, toString e equals
@@ -22,9 +25,16 @@ public class Course {
     @JsonProperty("_id")
     private Long id;
 
-    @Column(length = 200, nullable = false)
+    @NotBlank
+    @NotNull
+    @Size(min = 3, max = 100)
+    @Column(length = 100, nullable = false)
     private String name;
 
+    @NotNull
+    @Size(max = 10)
+    // Utilizado para validar se o valor é Back-end ou Front-end
+    @Pattern(regexp = "Back-end|Front-end")
     @Column(length = 10, nullable = false)
     private String category;
 }
