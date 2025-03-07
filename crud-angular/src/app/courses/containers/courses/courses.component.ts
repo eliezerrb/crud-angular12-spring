@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { ErrorDialogComponent } from 'src/app/shared/components/error-dialog/error-dialog.component';
 import { CoursesService } from '../../services/courses.service';
 import { Course } from './../../model/course';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfirmationDialogComponent } from 'src/app/shared/components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
@@ -65,7 +65,7 @@ export class CoursesComponent implements OnInit {
 
   onRemove(course: Course) {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      width: '300px',
+      width: '320px',
       data: 'Deseja realmente remover o curso?',
     });
 
