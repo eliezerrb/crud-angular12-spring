@@ -2,7 +2,6 @@ package com.eliezer.crud_spring.controller;
 
 import java.util.List;
 
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -17,30 +16,29 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.eliezer.crud_spring.model.Course;
-import com.eliezer.crud_spring.repository.CourseRepository;
+import com.eliezer.crud_spring.service.CourseService;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import lombok.AllArgsConstructor;
-
 
 // @Validated para validar as anotações que coloquei nos parametros é necessário ele
 @RestController
 @RequestMapping("/api/courses")
-// Anotação para gerar todoss os construtores pelo lombok
-@AllArgsConstructor
 @Validated
 public class CourseController {
 
-    // final para não alterar a instancia é uma boa prática
-    private final CourseRepository courseRepository;
+    private final CourseService courseService;
+
+    public CourseController(CourseService courseService) {
+        this.courseService = courseService;
+    }
 
     // @RequestMapping(method = RequestMethod.GET) é mesma coisa que @GetMapping
     // @RequestMapping(method = RequestMethod.GET)
     @GetMapping
     public List<Course> list() {
-        return courseRepository.findAll();
+        return courseService.list();
     }
 
     // com @PathVariable é possível pegar o valor que está vindo na url
@@ -50,7 +48,7 @@ public class CourseController {
     // ela
     @GetMapping("/{id}")
     public ResponseEntity<Course> findById(@PathVariable @NotNull @Positive Long id) {
-        return courseRepository.findById(id)
+        return courseService.findById(id)
                 .map(recordFound -> ResponseEntity.ok(recordFound))
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -60,9 +58,10 @@ public class CourseController {
     // desde que as variaceis tenham o mesmo nome
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    // @Valid para validar as anotações que coloquei na entidade, ou seja, no json que chegar é validado com as anotações do Course
+    // @Valid para validar as anotações que coloquei na entidade, ou seja, no json
+    // que chegar é validado com as anotações do Course
     public Course create(@RequestBody @Valid Course course) {
-        return courseRepository.save(course);
+        return courseService.create(course);
         // Se estivesse retornando Course e não quisesse alterar o status -> return
         // courseRepository.save(course);
         // se não tivesse a anotação @ResponseStatus -> return
@@ -71,24 +70,17 @@ public class CourseController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Course> update(@PathVariable @NotNull @Positive Long id, @RequestBody @Valid Course course) {
-        return courseRepository.findById(id)
-                .map(recordFound -> {
-                    recordFound.setName(course.getName());
-                    recordFound.setCategory(course.getCategory());
-                    Course updated = courseRepository.save(recordFound);
-                    return ResponseEntity.ok().body(updated);
-                })
+        return courseService.update(id, course)
+                .map(recordFound -> ResponseEntity.ok().body(recordFound))
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable @NotNull @Positive Long id) {
-        return courseRepository.findById(id)
-                .map(recordFound -> {
-                    courseRepository.deleteById(id);
-                    return ResponseEntity.noContent().<Void>build();
-                })
-                .orElse(ResponseEntity.notFound().build());
+        if (courseService.delete(id)) {
+            return ResponseEntity.noContent().<Void>build();
+        }
+        return ResponseEntity.notFound().build();
     }
 
 }
