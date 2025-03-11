@@ -17,6 +17,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 // @Data do lombok para criar getter, setter, construtor, toString e equals
+@SuppressWarnings("deprecation")
 @Data
 @Entity
 //@Table(name = "cursos")
