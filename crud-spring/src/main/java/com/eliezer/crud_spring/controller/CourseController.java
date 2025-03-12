@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.eliezer.crud_spring.model.Course;
+import com.eliezer.crud_spring.dto.CourseDTO;
 import com.eliezer.crud_spring.service.CourseService;
 
 import jakarta.validation.Valid;
@@ -36,7 +36,7 @@ public class CourseController {
     // @RequestMapping(method = RequestMethod.GET) é mesma coisa que @GetMapping
     // @RequestMapping(method = RequestMethod.GET)
     @GetMapping
-    public List<Course> list() {
+    public List<CourseDTO> list() {
         return courseService.list();
     }
 
@@ -46,7 +46,7 @@ public class CourseController {
     // .map(course -> ResponseEntity.ok(course)) -> se o (retorno) existir retorna
     // ela
     @GetMapping("/{id}")
-    public Course findById(@PathVariable @NotNull @Positive Long id) {
+    public CourseDTO findById(@PathVariable @NotNull @Positive Long id) {
         return courseService.findById(id);
     }
 
@@ -57,7 +57,7 @@ public class CourseController {
     @ResponseStatus(code = HttpStatus.CREATED)
     // @Valid para validar as anotações que coloquei na entidade, ou seja, no json
     // que chegar é validado com as anotações do Course
-    public Course create(@RequestBody @Valid Course course) {
+    public CourseDTO create(@RequestBody @Valid CourseDTO course) {
         return courseService.create(course);
         // Se estivesse retornando Course e não quisesse alterar o status -> return
         // courseRepository.save(course);
@@ -66,7 +66,7 @@ public class CourseController {
     }
 
     @PutMapping("/{id}")
-    public Course update(@PathVariable @NotNull @Positive Long id, @RequestBody @Valid Course course) {
+    public CourseDTO update(@PathVariable @NotNull @Positive Long id, @RequestBody @Valid @NotNull CourseDTO course) {
         return courseService.update(id, course);      
     }
 
