@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 
 import com.eliezer.crud_spring.model.Course;
 import com.eliezer.crud_spring.repository.CourseRepository;
+import com.eliezer.enums.Category;
 
 @SpringBootApplication
 public class CrudSpringApplication {
@@ -24,7 +25,7 @@ public class CrudSpringApplication {
 
 			Course c = new Course();
 			c.setName("Angular com Spring");
-			c.setCategory("Front-end");
+			c.setCategory(Category.FRONT_END);
 
 			courseRepository.save(c);
 		};

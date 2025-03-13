@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 import com.eliezer.crud_spring.dto.CourseDTO;
 import com.eliezer.crud_spring.model.Course;
+import com.eliezer.enums.Category;
 
 @Component
 public class CourseMapper {
@@ -12,7 +13,7 @@ public class CourseMapper {
         if (course == null) {
             return null;
         }
-        return new CourseDTO(course.getId(), course.getName(), course.getCategory());
+        return new CourseDTO(course.getId(), course.getName(), "Front-end");
     }
 
     public Course toEntity(CourseDTO courseDTO) {
@@ -26,7 +27,7 @@ public class CourseMapper {
             course.setId(courseDTO.id());
         }
         course.setName(courseDTO.name());
-        course.setCategory(courseDTO.category());
+        course.setCategory(Category.FRONT_END);
         return  course;
     }
 }

@@ -3,10 +3,15 @@ package com.eliezer.crud_spring.model;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
+import com.eliezer.enums.Category;
+import com.eliezer.enums.converters.CategoryConverter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -39,11 +44,9 @@ public class Course {
     private String name;
 
     @NotNull
-    @Size(max = 10)
-    // Utilizado para validar se o valor é Back-end ou Front-end
-    @Pattern(regexp = "Back-end|Front-end")
     @Column(length = 10, nullable = false)
-    private String category;
+    @Convert(converter = CategoryConverter.class)
+    private Category category;
 
     @NotNull
     @Size(max = 10)
