@@ -1,8 +1,12 @@
 package com.eliezer.crud_spring.dto.mapper;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Component;
 
 import com.eliezer.crud_spring.dto.CourseDTO;
+import com.eliezer.crud_spring.dto.LessonDTO;
 import com.eliezer.crud_spring.model.Course;
 import com.eliezer.enums.Category;
 
@@ -13,8 +17,14 @@ public class CourseMapper {
         if (course == null) {
             return null;
         }
+
+        List<LessonDTO> lessons = course.getLessons()
+                .stream()
+                .map(lesson -> new LessonDTO(lesson.getId(), lesson.getName(), lesson.getYoutubeUrl()))
+                .collect(Collectors.toList());
+
         return new CourseDTO(course.getId(), course.getName(), course.getCategory().getValue(),
-            course.getLessons());
+                lessons);
     }
 
     public Course toEntity(CourseDTO courseDTO) {
@@ -29,11 +39,11 @@ public class CourseMapper {
         }
         course.setName(courseDTO.name());
         course.setCategory(convertCategoryValue(courseDTO.category()));
-        return  course;
+        return course;
     }
 
     public Category convertCategoryValue(String value) {
-        if (value == null) { 
+        if (value == null) {
             return null;
         }
         return switch (value) {
@@ -41,8 +51,7 @@ public class CourseMapper {
             case "Back-end" -> Category.BACK_END;
             default -> throw new IllegalArgumentException("Categoria inválida: " + value);
         };
-            
-    }
 
+    }
 
 }
