@@ -1,3 +1,4 @@
+import { Lesson } from './../model/lesson';
 import { Injectable } from '@angular/core';
 import {
   ActivatedRouteSnapshot,
@@ -27,6 +28,6 @@ export class CourseResolver implements Resolve<Course> {
     return of({
       _id: '',
       name: '',
-      category: ''});
+      category: '', lessons: []});
   }
 }
