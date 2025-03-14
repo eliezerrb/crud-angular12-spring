@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import com.eliezer.crud_spring.model.Course;
+import com.eliezer.crud_spring.model.Lesson;
 import com.eliezer.crud_spring.repository.CourseRepository;
 import com.eliezer.enums.Category;
 
@@ -26,6 +27,12 @@ public class CrudSpringApplication {
 			Course c = new Course();
 			c.setName("Angular com Spring");
 			c.setCategory(Category.FRONT_END);
+
+			Lesson l = new Lesson();
+			l.setName("Introdução");
+			l.setYoutubeUrl("watch?v=");
+			l.setCourse(c);
+			c.getLessons().add(l);
 
 			courseRepository.save(c);
 		};
