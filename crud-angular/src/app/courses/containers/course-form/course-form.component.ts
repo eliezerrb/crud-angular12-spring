@@ -1,9 +1,12 @@
+import { Lesson } from './../../model/lesson';
+import { Course } from './../../model/course';
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { NonNullableFormBuilder, Validators } from '@angular/forms';
+import { Form, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { CoursesService } from '../../services/courses.service';
+
 
 @Component({
   selector: 'app-course-form',
@@ -12,11 +15,14 @@ import { CoursesService } from '../../services/courses.service';
 })
 export class CourseFormComponent implements OnInit {
 
-  form = this.formBuilder.group({
+  // ! permite que a variavel posso ser inicializada em outro momento ngOnInit ou no construtor
+  form!: FormGroup;
+
+/*   form = this.formBuilder.group({
     _id: [''],
     name: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
     category: ['', Validators.required],
-  });
+  }); */
 
   constructor(
     private formBuilder: NonNullableFormBuilder,
@@ -30,12 +36,37 @@ export class CourseFormComponent implements OnInit {
   ngOnInit(): void {
     // o snapshot é uma foto da rota, ele pega o valor do curso que foi passado no resolver, ou seja o .data pode ser qualquer coisa que foi passado no resolver
     const course = this.route.snapshot.data['course'];
-    this.form.setValue({
-      _id: course._id,
-      name: course.name,
-      category: course.category
+
+    // caso o course seja vazio o resolver já está passando vazio
+    this.form = this.formBuilder.group({
+      _id: [course._id],
+      name: [course.name, [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
+      category: [course.category, Validators.required],
+      lessons: this.formBuilder.array(this.retrieveLessons(course))
     });
-    console.log(course);
+    console.log(this.form);
+    console.log(this.form.value);
+  }
+
+  private retrieveLessons(course: Course) {
+    const lessons = [];
+    if (course?.lessons) {
+      course.lessons.forEach(lesson => {
+        lessons.push(this.createLesson(lesson));
+      })
+    } else {
+      lessons.push(this.createLesson());
+    }
+    return lessons;
+  }
+
+  // caso o valor da Lesson seja vazio, inicializa com um objeto vazio {id: '', name: '', youtubeUrl: ''}
+  private createLesson(lesson : Lesson  = {id: '', name: '', youtubeUrl: ''}) {
+    return this.formBuilder.group({
+      id: [lesson.id],
+      name: [lesson.name],
+      youtubeUrl: [lesson.youtubeUrl]
+    })
   }
 
   onSubmit() {
