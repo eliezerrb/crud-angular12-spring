@@ -73,6 +73,16 @@ export class CourseFormComponent implements OnInit {
     return (<UntypedFormArray>this.form.get('lessons'))?.controls;
   }
 
+  AddNewLesson() {
+    const lessons = this.form.get('lessons') as UntypedFormArray;
+    lessons.push(this.createLesson());
+  }
+
+  removeLesson(index: number) {
+    const lesson = this.form.get('lessons') as UntypedFormArray;
+    lesson.removeAt(index);
+  }
+
   onSubmit() {
       // o retorno do post é um observable, por isso tem que fazer o subscribe que é se inscrever
     this.service.save(this.form.value)
