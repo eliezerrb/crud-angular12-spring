@@ -9,6 +9,7 @@ import org.springframework.validation.annotation.Validated;
 import com.eliezer.crud_spring.dto.CourseDTO;
 import com.eliezer.crud_spring.dto.mapper.CourseMapper;
 import com.eliezer.crud_spring.exception.RecordNotFoundException;
+import com.eliezer.crud_spring.model.Course;
 import com.eliezer.crud_spring.repository.CourseRepository;
 
 import jakarta.validation.Valid;
@@ -30,29 +31,33 @@ public class CourseService {
 
     public List<CourseDTO> list() {
         return courseRepository.findAll()
-        .stream()  
- //      .map(course -> courseMapper.toDTO(course)) ou o de baixo que é a mesma coisa
-        .map(courseMapper::toDTO)
-        .collect(Collectors.toList());
+                .stream()
+                // .map(course -> courseMapper.toDTO(course)) ou o de baixo que é a mesma coisa
+                .map(courseMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     public CourseDTO findById(@NotNull @Positive Long id) {
         return courseRepository.findById(id).map(courseMapper::toDTO)
-        .orElseThrow(() -> new RecordNotFoundException(id));
+                .orElseThrow(() -> new RecordNotFoundException(id));
     }
 
     public CourseDTO create(@Valid @NotNull CourseDTO course) {
         return courseMapper.toDTO(courseRepository.save(courseMapper.toEntity(course)));
     }
 
-    public CourseDTO update(@NotNull @Positive Long id, @Valid @NotNull CourseDTO course) {
+    public CourseDTO update(@NotNull @Positive Long id, @Valid @NotNull CourseDTO courseDTO) {
         return courseRepository.findById(id)
                 .map(recordFound -> {
-                    recordFound.setName(course.name());
-                    recordFound.setCategory(courseMapper.convertCategoryValue(course.category()));
+                    Course course = courseMapper.toEntity(courseDTO);
+                    recordFound.setName(courseDTO.name());
+                    recordFound.setCategory(courseMapper.convertCategoryValue(courseDTO.category()));
+                    // A linha abaixo da erro devido a referencia, pois já tem um Lesson
+                    // recordFound.setLessons(course.getLessons());
+                    recordFound.getLessons().clear();
+                    course.getLessons().forEach(recordFound.getLessons()::add);
                     return courseMapper.toDTO(courseRepository.save(recordFound));
                 }).orElseThrow(() -> new RecordNotFoundException(id));
-
     }
 
     public void delete(@NotNull @Positive Long id) {
