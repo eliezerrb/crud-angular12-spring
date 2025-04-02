@@ -20,14 +20,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
 
-// @Data do lombok para criar getter, setter, construtor, toString e equals
 @SuppressWarnings("deprecation")
-@Data
 @Entity
 //@Table(name = "cursos")
 // Utilizado para fazer um soft delete, ou seja, não deleta o registro do banco, apenas altera o status para inativo
@@ -43,7 +42,7 @@ public class Course {
 
     @NotBlank
     @NotNull
-    @Size(min = 3, max = 100)
+    @Size(min = 5, max = 100)
     @Column(length = 100, nullable = false)
     private String name;
 
@@ -57,10 +56,59 @@ public class Course {
     @Convert(converter = StatusConverter.class)
     private Status status = Status.ACTIVE;
 
+    @NotNull
+    @NotEmpty
+    @Valid
     // Isso inclui, por exemplo, operações de persistência em entidades filhas, operações de exclusão em entidades filhas e operações de atualização em entidades filhas.
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "course")
     // @JoinColumn da o problema de n+1 consultas performance do bd
     // @JoinColumn(name = "course_id")
     private List<Lesson> lessons = new ArrayList<>();
-    
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public List<Lesson> getLessons() {
+        return lessons;
+    }
+
+    public void setLessons(List<Lesson> lessons) {
+        this.lessons = lessons;
+    }
+
+    @Override
+    public String toString() {
+        return "Course [id=" + id + ", name=" + name + ", category=" + category + ", status=" + status + ", lessons="
+                + lessons + "]";
+    }
+
 }
