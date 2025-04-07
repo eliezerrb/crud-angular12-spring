@@ -1,7 +1,5 @@
 package com.eliezer.crud_spring.controller;
 
-import java.util.List;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,15 +9,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.eliezer.crud_spring.dto.CourseDTO;
+import com.eliezer.crud_spring.dto.mapper.CoursePageDTO;
 import com.eliezer.crud_spring.service.CourseService;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 
 // @Validated para validar as anotações que coloquei nos parametros é necessário ele
 @RestController
@@ -33,12 +35,17 @@ public class CourseController {
         this.courseService = courseService;
     }
 
+    @GetMapping
+    public CoursePageDTO list(@RequestParam(defaultValue = "0") @PositiveOrZero int page, @RequestParam(defaultValue = "10") @Positive @Max(100) int pageSize) {
+        return courseService.list(page, pageSize);
+    }
+
     // @RequestMapping(method = RequestMethod.GET) é mesma coisa que @GetMapping
     // @RequestMapping(method = RequestMethod.GET)
-    @GetMapping
-    public List<CourseDTO> list() {
-        return courseService.list();
-    }
+    // @GetMapping
+    // public List<CourseDTO> list() {
+    //     return courseService.list();
+    // }
 
     // com @PathVariable é possível pegar o valor que está vindo na url
     // ResponseEntity classe que permite retornar caso agente queira controlar o que
