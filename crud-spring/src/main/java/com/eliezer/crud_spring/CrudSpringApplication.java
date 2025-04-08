@@ -4,6 +4,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 
 import com.eliezer.crud_spring.model.Course;
 import com.eliezer.crud_spring.model.Lesson;
@@ -20,6 +21,8 @@ public class CrudSpringApplication {
 	// Bean falando para o spring para ele gerenciar todo o ciclo de vida
 	// CommandLineRunner Assim que executar o projeto, faça isso
 	@Bean
+	// @Profile("dev") - só vai executar esse método se o perfil for dev
+	@Profile("dev")
 	CommandLineRunner initDatabase(CourseRepository courseRepository) {
 		return args -> {
 			courseRepository.deleteAll();

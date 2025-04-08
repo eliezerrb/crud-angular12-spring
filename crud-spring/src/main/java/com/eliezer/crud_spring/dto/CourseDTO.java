@@ -1,8 +1,8 @@
 package com.eliezer.crud_spring.dto;
 
 import java.util.List;
-import java.util.Locale.Category;
 
+import com.eliezer.enums.Category;
 import com.eliezer.enums.validation.ValueOfEnum;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
