@@ -1,7 +1,7 @@
 <mat-card>
   <mat-toolbar color="primary">Cursos disponíveis</mat-toolbar>
 
-  <div class=".column-flex mat-elevation-z8">
+  <div *ngIf="courses$ | async as courses; else loading" class=".column-flex mat-elevation-z8">
 
   <!-- courses$ é um observable | async para automaticamente se inscrever no observable e destruir a o componete o angular faz o unsubscribe não ficar fazendo requisição -->
   <!-- vai ser responsavel por se inscrever no observable extrai as informações, atribuir elas para a variavel local que se chama courses-->
@@ -11,17 +11,25 @@
    <!-- (edit)="onEdit($event)" é um listener escutando o componente filho para quando clicar no editar curso $event para pegar o que foi passado-->
    <!-- Esses comunicação entre componente pai e filho foi feita para separar os componenentes e facilitar na criação dos testes-->
   <app-courses-list
-    *ngIf="courses$ | async as courses; else loading"
-    [courses]="courses"
+
+    [courses]="courses.courses"
     (add)="onAdd()"
     (edit)="onEdit($event)"
     (remove)="onRemove($event)"
     ></app-courses-list>
 
-  <ng-template #loading>
-    <div class="loading-spinner">
-      <mat-spinner></mat-spinner>
-    </div>
-  </ng-template>
+    <mat-paginator [pageSizeOptions]="[5, 10, 15]"
+      showFirstLastButtons
+      [pageIndex]="pageIndex"
+      [pageSize]="pageSize"
+      [length]="courses.totalElements"
+      (page)="refresh($event)"
+      aria-label="Select page of courses">
+    </mat-paginator>
 </div>
+<ng-template #loading>
+  <div class="loading-spinner">
+    <mat-spinner></mat-spinner>
+  </div>
+</ng-template>
 </mat-card>

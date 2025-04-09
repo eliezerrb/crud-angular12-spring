@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Course } from '../model/course';
 
 import { first, tap } from 'rxjs/operators';
+import { CoursePage } from '../model/course-page';
 
 @Injectable({
   providedIn: 'root',
@@ -14,9 +15,9 @@ export class CoursesService {
 
   constructor(private httpClient: HttpClient) {}
 
-  list() {
+  list(page = 0, pageSize = 10) {
     // pipe pode manipular o retorno do get de maneira reativaa antes do retorno final
-    return this.httpClient.get<Course[]>(this.API).pipe(
+    return this.httpClient.get<CoursePage>(this.API, { params: { page, pageSize } }).pipe(
       // pegar a primeira resposta e fechar a conexão, isso porque não é um websocket
       first(),
       //delay(5000),

@@ -22,7 +22,7 @@ public class CrudSpringApplication {
 	// CommandLineRunner Assim que executar o projeto, faça isso
 	@Bean
 	// @Profile("dev") - só vai executar esse método se o perfil for dev
-	@Profile("dev")
+	@Profile({"test", "dev"})
 	CommandLineRunner initDatabase(CourseRepository courseRepository) {
 		return args -> {
 			courseRepository.deleteAll();
