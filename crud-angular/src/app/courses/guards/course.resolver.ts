@@ -1,10 +1,6 @@
 import { Lesson } from './../model/lesson';
 import { Injectable } from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  Resolve,
-  RouterStateSnapshot
-} from '@angular/router';
+import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { Course } from '../model/course';
 import { CoursesService } from '../services/courses.service';
@@ -15,7 +11,7 @@ import { CoursesService } from '../services/courses.service';
 
 // id do route.params['id'] é o id que vem da rota o mesmo do courses-routing.module.ts
 
-export class CourseResolver implements Resolve<Course> {
+export class CourseResolver  {
 
   constructor(private service: CoursesService) {}
 
