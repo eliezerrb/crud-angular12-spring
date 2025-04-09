@@ -1,6 +1,6 @@
 import { Lesson } from './../../model/lesson';
 import { Course } from './../../model/course';
-import { Location, NgIf, NgFor } from '@angular/common';
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Form, FormGroup, NonNullableFormBuilder, UntypedFormArray, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -22,25 +22,23 @@ import { MatCard, MatCardContent, MatCardActions } from '@angular/material/card'
     styleUrls: ['./course-form.component.scss'],
     standalone: true,
     imports: [
-        MatCard,
-        MatToolbar,
-        MatCardContent,
-        ReactiveFormsModule,
-        MatFormField,
-        MatInput,
-        MatHint,
-        NgIf,
-        MatError,
-        MatLabel,
-        MatSelect,
-        MatOption,
-        MatIconButton,
-        MatIcon,
-        NgFor,
-        MatPrefix,
-        MatCardActions,
-        MatButton,
-    ],
+    MatCard,
+    MatToolbar,
+    MatCardContent,
+    ReactiveFormsModule,
+    MatFormField,
+    MatInput,
+    MatHint,
+    MatError,
+    MatLabel,
+    MatSelect,
+    MatOption,
+    MatIconButton,
+    MatIcon,
+    MatPrefix,
+    MatCardActions,
+    MatButton
+],
 })
 export class CourseFormComponent implements OnInit {
   // ! permite que a variavel posso ser inicializada em outro momento ngOnInit ou no construtor
